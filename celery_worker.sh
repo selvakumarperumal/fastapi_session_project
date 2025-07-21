@@ -1,0 +1,1 @@
+celery -A tasks.session_tasks worker --loglevel=info
