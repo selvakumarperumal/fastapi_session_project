@@ -12,7 +12,12 @@ class SessionMiddleware(BaseHTTPMiddleware):
         if not session_id:
             print("No session ID found, creating a new one.")
             session_id = str(uuid.uuid4())
-            response.set_cookie(key="session_id", value=session_id)
+            response.set_cookie(key="session_id",
+                                value=session_id,
+                                expires=60,
+                                httponly=True,
+                                samesite="lax")
+            
             create_session_file(session_id)
             delete_session_task.apply_async((session_id,), countdown=60)
         return response
